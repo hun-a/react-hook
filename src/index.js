@@ -16,7 +16,7 @@ const useInput = (initialValue, validator) => {
 
 const App = () => {
   const validator = (input) => input.length <= 10;
-  const name = useInput("Mr.");
+  const name = useInput("Mr.", validator);
   return (
     <div className="App">
       <h1>Hello</h1>
