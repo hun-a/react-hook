@@ -6,7 +6,7 @@ import "./styles.css";
 const useInput = (initialValue, validator) => {
   const [value, setValue] = useState(initialValue);
   const onChange = (event) => {
-    let isValid = typeof validator === "function" ? validator(value) : true;
+    const isValid = typeof validator === "function" ? validator(value) : true;
     if (isValid) {
       setValue(event.target.value);
     }
