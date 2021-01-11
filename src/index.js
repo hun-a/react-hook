@@ -1,32 +1,29 @@
 import React, { useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 
-const useHover = (onHover) => {
-  if (typeof onHover !== "function") {
+const useConfirm = (message = "", callback, rejection) => {
+  if (typeof callback !== "function") {
     return;
   }
-  const element = useRef();
-  useEffect(() => {
-    const current = element.current;
-    if (current) {
-      current.addEventListener("mouseenter", onHover);
-    }
-    return () => {
-      if (current) {
-        current.removeEventListener("mouseenter", onHover);
-      }
-    };
-  }, []);
 
-  return element;
+  const confirmAction = () => {
+    if (confirm(message)) {
+      callback();
+    } else if (typeof rejection === "function") {
+      rejection();
+    }
+  };
+
+  return confirmAction;
 };
 
 const App = () => {
-  const onHover = () => console.log("Sombody hovered!");
-  const markRef = useHover(onHover);
+  const deleteWorld = () => console.log("Deleting the world...");
+  const abort = () => console.log("Aborted");
+  const confirmDelete = useConfirm("Are you sure?", deleteWorld, abort);
   return (
     <div className="App">
-      <h1 ref={markRef}>Hello</h1>
+      <button onClick={confirmDelete}>Delete the world</button>
     </div>
   );
 };
