@@ -1,29 +1,32 @@
 import React, { useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 
-const useClick = (onClick) => {
+const useHover = (onHover) => {
+  if (typeof onHover !== "function") {
+    return;
+  }
   const element = useRef();
   useEffect(() => {
     const current = element.current;
     if (current) {
-      current.addEventListener("click", onClick);
+      current.addEventListener("mouseenter", onHover);
     }
     return () => {
       if (current) {
-        current.removeEventListener("click", onClick);
+        current.removeEventListener("mouseenter", onHover);
       }
     };
-  });
+  }, []);
 
   return element;
 };
 
 const App = () => {
-  const onClick = () => console.log("hello");
-  const element = useClick(onClick);
+  const onHover = () => console.log("Sombody hovered!");
+  const markRef = useHover(onHover);
   return (
     <div className="App">
-      <h1 ref={element}>Hi</h1>
+      <h1 ref={markRef}>Hello</h1>
     </div>
   );
 };
